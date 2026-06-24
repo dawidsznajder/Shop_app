@@ -2,6 +2,7 @@ package pl.dawidsznajder.order.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import pl.dawidsznajder.order.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,4 +21,6 @@ public class OrderResponseDTO {
     private BigDecimal totalPrice;
 
     private List<OrderItemResponseDTO> items;
+
+    private OrderStatus status;
 }
