@@ -3,6 +3,7 @@ package pl.dawidsznajder.product;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.dawidsznajder.exception.ProductNotFoundException;
+import pl.dawidsznajder.mapper.ProductMapper;
 import pl.dawidsznajder.product.dto.ProductPatchDTO;
 import pl.dawidsznajder.product.dto.ProductRequestDTO;
 import pl.dawidsznajder.product.dto.ProductResponseDTO;
@@ -21,10 +22,11 @@ public class ProductServiceImpl implements ProductService {
         product.setName(dto.getName());
         product.setPrice(dto.getPrice());
         product.setDescription(dto.getDescription());
+        product.setImageName(dto.getImageName());
 
         Product saved = productRepository.save(product);
 
-        return mapToResponse(saved);
+        return ProductMapper.toDto(saved);
     }
 
     @Override
@@ -32,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
-            return mapToResponse(product);
+            return ProductMapper.toDto(product);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.findAll();
 
         return products.stream()
-                .map(this::mapToResponse)
+                .map(ProductMapper::toDto)
                 .toList();
     }
 
@@ -62,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product updated = productRepository.save(product);
 
-        return mapToResponse(updated);
+        return ProductMapper.toDto(updated);
     }
 
     @Override
@@ -83,16 +85,7 @@ public class ProductServiceImpl implements ProductService {
        }
         Product updated = productRepository.save(product);
 
-       return mapToResponse(updated);
-    }
-
-    private ProductResponseDTO mapToResponse(Product product) {
-        return ProductResponseDTO.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .price(product.getPrice())
-                .description(product.getDescription())
-                .build();
+       return ProductMapper.toDto(updated);
     }
 }
 

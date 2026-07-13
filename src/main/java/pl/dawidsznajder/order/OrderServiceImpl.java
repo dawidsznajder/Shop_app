@@ -1,5 +1,6 @@
 package pl.dawidsznajder.order;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,7 @@ public class OrderServiceImpl implements OrderService{
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public Order checkout(Long cartId) {
 
         Cart cart = cartRepository.findById(cartId)
